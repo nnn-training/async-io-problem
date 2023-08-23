@@ -1,22 +1,24 @@
 'use strict';
 
-const https = require('node:https');
-const fs = require('node:fs');
-let data = '';
-
-const promise = new Promise((resolve,reject) =>{
-    https.get('https://www.nicovideo.jp/ranking/genre/all?term=hour&rss=2.0&lang=ja-jp', (response) =>
-    {
-        response
-            .on('data', (chunk) => {
-                data += chunk;
-            })
-            .on('end', () => {
-                resolve();
-            });
-    })
-});
-
-promise.then(() => {
-    fs.writeFile('test.txt', data, 'utf8', () => {})
+new Promise((resolve) => {
+    const nowDate = new Date();
+    resolve(nowDate);    
+}).then((v1) => {
+    // v1 は 現在の時刻情報
+    new Promise((resolve) => {
+        const monthAndDate = {
+            month: v1.getMonth(),
+            date: v1.getDate()
+        }
+        resolve(monthAndDate);
+    }).then((v2) => {
+        // v2 は 日付の情報
+        new Promise((resolve) => {
+            const text = `今日は${v2.month+1}月${v2.date}日です。`;
+            resolve(text);
+        }).then((v3) => {
+            // v3 は　日付を示す文章
+            console.log(v3); // 今日の日付に関する文章が出力される
+        });
+    });
 });
