@@ -10,15 +10,13 @@ https.get('https://www.nicovideo.jp/ranking/genre/all?term=hour&rss=2.0&lang=ja-
       'User-Agent': 'node',
     },
   },
-  (response) => {
-    response
+  (res) => {
+    res
       .on('data', (chunk) => {
         data += chunk;
       })
-      .on('end', () => {
-        
+      .on('end', () => { // getが完了したらファイルにdataを保存
+        fs.writeFile('test.txt', data, 'utf8', () => {});
       });
   }
 );
-
-fs.writeFile('test.txt', data, 'utf8', () => {});
